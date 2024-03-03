@@ -17,7 +17,6 @@ class Phone(Field):
         if not self.is_valid_phone():
             raise ValueError("Invalid phone number")
     def is_valid_phone(self):
-
         return len(self.value) == 10 and self.value.isdigit()
 
 class Record:
@@ -48,12 +47,15 @@ class Record:
         return f"Contact name: {self.name.value}, phones: {'; '.join(str(p) for p in self.phones)}"
 
 class AddressBook(UserDict):
+    def __init__(self):
+        self.records = {}
+
     def add_record(self, record):
-        self.data[record.name.value] = record
+        self.records[record.name.value] = record
 
     def find(self, name):
-        return self.data.get(name)
+        return self.records.get(name)
 
     def delete(self, name):
-        del self.data[name] 
-        
+        if name in self.records:
+            del self.records[name]
